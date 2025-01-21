@@ -14,6 +14,8 @@ Latent Dirichlet Allocation (LDA) works by assuming that each document is a mixt
 mixture of words, both represented as probability distributions. The algorithm reverse-engineers these distributions by
 iteratively assigning words to topics based on their likelihood of belonging to a topic and refining the topic-document associations.
 
+![Example Output](output/With Communities Topic network 2868 Articles 25 Topics.png)
+
 ## 3. Repository Structure
 *data/*: example dataset and txt-files serving as input
 *literature/*: some papers relevant for the implementation
