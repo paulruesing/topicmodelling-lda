@@ -1,0 +1,794 @@
+# this list contains all abbreviations that should be replaced during the analysis
+# please structure the list as follows:
+# abbreviation (lower case) -- meaning (lower case, with or without underscores)
+# e.g.
+# ai -- artificial intelligence
+hpn -- home parenteral nutrition
+ems -- electrical muscle stimulation
+ai -- artificial intelligence
+als -- advanced life support
+nppv -- non-invasive positive pressure ventilation
+ehra -- electronic health record architecture
+mri -- magnetic resonance imaging
+rnfa -- rn first assistant
+wns -- wavelet networks
+adhd -- attention deficit hyperactivity disorder
+ase -- arthritis self-efficacy
+cas -- computer-assisted surgery
+rmr -- rural medicine rotation
+cdb -- clinical discussion board
+cvd -- cardiovascular disease
+
+# it -- information technology
+
+pem -- personal ecg monitor
+ecg -- electrocardiogram
+htus -- home telemedicine units
+nhsdo -- nhs direct online
+tmpq -- telemedicine perception questionnaire
+ann -- artificial neural network
+roc -- receiver operating characteristic
+cnss -- clinical nurse specialists
+cfa -- confirmatory factor analysis
+sem -- structural equation modeling
+hci -- human-computer interaction
+cabg -- coronary artery bypass graft
+thls -- telenursing health-line service
+fc -- functional connectivity
+icts -- information and communications technologies
+tsq -- telemedicine satisfaction questionnaire
+hf -- heart failure
+hnv -- home nurse visit
+ntm -- nurse telemanagement
+np -- nosocomial pneumonia
+ipv -- intimate partner violence
+nts -- negotiated telephone support
+pu -- perceived usefulness
+ltd -- learning through discussion
+ipe -- interprofessional education
+cahs -- critical access hospitals
+cpoe -- computerized prescriber-order-entry
+hit -- health information technology
+chf -- congestive heart failure
+rct -- randomized controlled trial
+or -- operating room
+ir -- information retrieval
+nlp -- natural language processing
+cpap -- continuous positive airway pressure
+nfc -- near field communication
+cst -- communication skills training
+rbf -- radial basis function
+hcps -- health care providers
+ctc -- clinical telehealth coordinator
+uihn -- university integrated healthcare network
+isg -- internet support group
+tncm -- telephonic nurse case management
+fch -- family cancer history
+ct -- computed tomography
+nt -- nanotechnology
+ap -- anatomical pathology
+cbt -- cognitive behavioral therapy
+
+# could be difficult, compare "personal digital assistant"
+pda -- patient decision aid
+
+td -- teledentistry
+smi -- severely mentally ill
+ts -- tourette syndrome
+fls -- laparoscopic surgery
+sp -- simulated patient
+t2d -- type 2 diabetes
+ecgs -- electrocardiograms
+va -- visual acuity
+dcm -- depression care manager
+pnes -- psychogenic nonepileptic seizures
+ctq -- critical-to-quality
+tors -- transoral robotic surgery
+ihms -- implantable hemodynamic monitors
+tcm -- traditional chinese medicine
+nei -- neuro-endocrine-immune
+ehr -- electronic health record
+sbp -- systolic blood pressure
+khcc -- king hussein cancer center
+cnc -- clinical nurse coordinator
+cal -- computer-aided learning
+ed -- emergency department
+mdct -- multi-detector computed tomography
+eopr -- electronic oncological patient record
+sms -- short messages service
+npm -- normalization process model
+pbl -- problem-based learning
+vm -- virtual microscopy
+rc -- residential care
+fcs -- family caregivers
+tivr -- therapeutic interactive voice response
+nli -- natural language interface
+its -- intelligent tutoring system
+uc -- usual care
+bp -- blood pressure
+tm -- telemonitoring
+tas -- therapy assistants
+gina -- genetic information nondiscrimination act
+gdm -- gestational diabetes mellitus
+srm -- self-regulatory model
+icers -- incremental cost effectiveness ratios
+2hpmg -- 2hrs post-meal glucose
+
+# meaningless:
+# se -- self-efficacy
+
+ci -- cochlear implant
+ses -- standardized effect size
+crf -- chronic respiratory failure
+psat -- pulsed arterial saturation
+ipc -- interpersonal counseling
+tau -- treatment as usual
+es -- effect size
+dmn -- default mode-network
+rg -- remote-guidance
+iss -- interpatch style transfer
+
+# us -- ultrasound
+
+lvhn -- lehigh valley health network
+hal -- hybrid assistive limb
+fim -- functional independence measure
+cmhds -- common mental health disorders
+ccm -- continuous care model
+cht -- consumer health technologies
+bmi -- body mass index
+rtm -- remotely telementored
+hhv -- home hospice visit
+mello -- medical lifelog ontology
+hmis -- human-machine interfaces
+bomis -- body-machine interfaces
+sci -- spinal cord injury
+ami -- ambient intelligence
+mets -- metabolic syndrome
+epr -- electronic patient record
+dr -- diabetic retinopathy
+ssp -- syringe services programs
+aco -- asthma-copd overlap
+car -- circadian activity rhythm
+sxqol -- symptom and quality of life
+pcst -- pain coping skills training
+sds -- self-rating depression scale
+ais -- adolescent idiopathic scoliosis
+dkrs -- german clinical trials register
+mcs -- mental component summary
+sdl -- self-directed learning
+sspsc -- stroke-specific patient satisfaction with care
+ptsd -- post-traumatic stress disorder
+mci -- mild cognitive impairment
+rop -- retinopathy of prematurity
+lmic -- low- and middle-income country
+ssa -- sub-saharan african
+do -- document ontology
+adls -- activities of daily living
+
+# this could incur difficulties, because it also means mililitres
+ml -- machine learning
+
+asl -- arterial spin labeling
+rcbf -- regional cerebral blood flow
+hri -- human-robot interaction
+ta -- therapeutic alliance
+mrnd -- modified radical neck dissection
+rand -- robot-assisted neck dissection
+mfl -- modified facelift
+ra -- rheumatoid arthritis
+ccnd -- central compartment neck dissection
+cm -- conventional monitoring
+copd -- chronic obstructive pulmonary disease
+pnn -- probabilistic neural network
+eb -- evidence base
+
+# mi -- medical information
+
+snt -- standardized nursing terminology
+ehrs -- electronic health records
+tn -- telenursing
+
+# fbi -- full body illusion
+
+ot -- occupational therapy
+rt -- robotic thyroidectomy
+bis -- body image scale
+tms -- transcranial magnetic stimulation
+ucd -- user-centered design
+r&d -- research and development
+tam -- technology acceptance model
+hrql -- health-related quality of life
+mid -- minimally important difference
+ocd -- obsessive-compulsive disorder
+tsse -- total skin self-examination
+db -- dissonance-based
+tnt -- traditional nurse triage
+ped -- pediatric emergency department
+pacs -- picture archiving and communication system
+gaf -- global assessment of functioning
+cam -- complementary and alternative medicine
+phr -- personal health record
+hba1c -- glycated hemoglobin
+spss -- statistical package for the social sciences
+aqlq -- asthma quality of life questionnaire
+dtmm -- disease treatment and monitoring of malaria
+ict -- information and communication technology
+iac -- inhibitory control assessment
+ada -- American Diabetes Association
+aace -- American Association of Clinical Endocrinologists
+a1c -- glycated hemoglobin
+sd -- standard deviation
+wmd -- weapon of mass destruction
+cmsa -- Case Management Society of America
+fast -- focused assessment with sonography for trauma
+cdpm -- chronic disease prevention and management
+icf -- International Classification of Functioning, Disability, and Health
+adl -- activities of daily living
+rbi -- rule-based inference
+epai -- educational preparation for autonomous instruction
+tech -- technology-enabled healthcare
+liwc -- linguistic inquiry and word count
+dass -- depression anxiety stress scales
+yr -- year
+rai -- resident assessment instrument
+reach -- rapid evaluation of acute ischemic stroke
+ldl -- low-density lipoprotein
+icbt -- internet-based cognitive behavioral therapy
+afr -- alternate forms reliability
+cv -- cardiovascular
+dv -- dependent variable
+eds -- emergency departments
+mr -- magnetic resonance
+oecd -- Organisation for Economic Co-operation and Development
+gdp -- gross domestic product
+fmri -- functional magnetic resonance imaging
+acnm -- American College of Nurse-Midwives
+cat -- COPD assessment test
+utaut -- unified theory of acceptance and use of technology
+ssi -- surgical site infection
+t2dm -- type 2 diabetes mellitus
+aal -- ambient assisted living
+phm -- population health management
+gv -- glycemic variability
+cgm -- continuous glucose monitoring
+mps -- multilayer perceptron systems
+ad -- Alzheimer’s disease
+qol -- quality of life
+rarc -- robot-assisted radical cystectomy
+bci -- brain-computer interface
+eortc -- European Organisation for Research and Treatment of Cancer
+rcn -- remote care nurse
+rpm -- remote patient monitoring
+bdd -- body dysmorphic disorder
+cg -- control group
+soc -- standard of care
+pcs -- physical component summary
+hiv -- human immunodeficiency virus
+tbi -- traumatic brain injury
+hpo -- health professional organization
+cpr -- cardiopulmonary resuscitation
+spq -- study process questionnaire
+tat -- thematic apperception test
+cd -- Crohn's disease
+aacn -- American Association of Critical-Care Nurses
+him -- health information management
+nhii -- National Health Information Infrastructure
+ilc -- iterative learning control
+otn -- Ontario Telemedicine Network
+dtc -- differentiated thyroid cancer
+apps -- electronic applications
+atsm -- automated telephone self-management
+auc -- area under the curve
+aba -- applied behavior analysis
+ade -- adverse drug event
+airr -- adjusted incidence rate ratio
+art -- antiretroviral therapy
+at -- assistive technology
+
+# bed -- binge eating disorder
+
+bi -- behavioral intention
+bcts -- behavior change techniques
+bw -- birthweight
+cdc -- Centers for Disease Control and Prevention
+chaea -- Honey and Alonso’s learning styles questionnaire
+cnns -- convolutional neural networks
+cr -- composite reliability
+cses -- COPD self-efficacy scale
+cpgv -- consensus perceived glycemic variability
+dktk -- German Cancer Consortium
+esdp -- early screen for discharge planning
+fnirs -- functional near-infrared spectroscopy
+flow -- optimal experience in psychology
+gcn -- graph convolutional network
+gbm -- glioblastoma multiforme
+hct -- hematocrit
+hc -- homecare
+hrqol -- health-related quality of life
+icu -- intensive care unit
+ic -- integrated care
+ilcor -- International Liaison Committee on Resuscitation
+iot -- Internet of Things
+ivr -- interactive voice response
+jip -- joint imaging platform
+lh -- luteinizing hormone
+lstm -- long short-term memory
+mct -- multiple comparison test
+mind -- modality-independent neighborhood descriptor
+mr -- magnetic resonance
+mv -- mechanical ventilation
+mvpa -- moderate to vigorous physical activity
+mhas -- mobile health applications
+mrrs -- medication regimen reviews
+mdds -- mal de debarquement syndrome
+ncds -- non-communicable diseases
+nlawm -- nature landscape applications with and without music
+nlam -- nature landscape applications with music
+nps -- nurse practitioners
+otc -- over-the-counter
+oud -- opioid use disorder
+orc -- organizational readiness for change
+oppis -- online positive psychology interventions
+phc -- primary health care
+pcr -- polymerase chain reaction
+pcs -- physical component summary
+pcps -- primary care physicians
+p3ceq -- person-centered coordinated care experience questionnaire
+psd -- persuasive system design
+psmrs -- personalized self-managed rehabilitation system
+pwd -- people with disabilities
+qol -- quality of life
+rtms -- repetitive transcranial magnetic stimulation
+ssc -- surviving sepsis campaign
+sz -- schizophrenia
+scd -- sickle cell disease
+sdt -- self-determination theory
+svm -- support vector machine
+t1d -- type 1 diabetes
+tmas -- tele-medical assistance service
+tmh -- telemental health
+ucsf -- University of California, San Francisco
+vpn -- virtual private network
+vr -- virtual reality
+vor -- vestibulo-ocular reflex
+who -- World Health Organization
+ibd -- inflammatory bowel disease
+ats -- acute thrombosis syndrome
+hcp -- health care professional
+ppe -- personal protective equipment
+rcts -- randomized controlled trials
+pci -- percutaneous coronary intervention
+stemi -- ST-elevation myocardial infarction
+csp -- compounded sterile product
+poc -- point-of-care
+vha -- Veterans Health Administration
+ef -- executive function
+oas -- obstructive sleep apnea syndrome
+qmsi -- quantitative mass spectrometry imaging
+
+# gp -- general practitioner
+
+cf -- cystic fibrosis
+meg -- magnetoencephalography
+
+# could also be read-only memory:
+# rom -- range of motion
+
+dxa -- dual-energy X-ray absorptiometry
+oa -- osteoarthritis
+
+# pros -- patient-reported outcomes
+ib -- inflammatory burden
+ativr -- alcohol therapeutic interactive voice response
+ih -- internalized heterosexism
+m-iot -- medical Internet of Things
+frail -- frailty assessment in patient care
+io -- intraosseous access
+imed -- Intermountain Medical Center
+hnc -- head and neck cancer
+ades -- adverse drug events
+ncq -- Nijmegen Continuity Questionnaire
+apr -- adjusted prevalence ratio
+tfvs -- telephone follow-up visits
+g1 -- immune-cold phenotype
+qoc -- quality of care
+ht -- home telehealth
+pd -- Parkinson's disease
+srt -- speech recognition threshold
+updrs -- Unified Parkinson's Disease Rating Scale
+bpd -- borderline personality disorder
+dtw -- dynamic time warping
+cpd -- continuing professional development
+acs -- acute coronary syndromes
+mebot -- mobility enhancement robotic wheelchair
+epw -- electric powered wheelchair
+cdr -- clinical dementia rating
+stis -- sexually transmitted infections
+ncdc -- National Center for Disease Control
+md -- mean difference
+smd -- standardized mean difference
+pwe -- people with epilepsy
+t0 -- baseline assessment
+cbct -- cone beam computed tomography
+ngs -- next-generation sequencing
+
+# also radio frequency:
+rf -- random forest
+
+rm -- remote monitoring
+osa -- obstructive sleep apnea
+vegf -- vascular endothelial growth factor
+dl -- deep learning
+
+# unpopular:
+# qa -- quality assurance
+
+osa -- obstructive sleep apnea
+eeg -- electroencephalogram
+sane -- sexual assault nurse examiner
+osa -- obstructive sleep apnea
+
+# compare public relations:
+# pr -- pulmonary rehabilitation
+
+go -- gene ontology
+hla -- human leukocyte antigen
+eimci -- electronic integrated management of childhood illness
+sus -- system usability scale
+eular -- European League Against Rheumatism
+
+# both represent units, cannot be included:
+# ms -- multiple sclerosis
+# mm -- multiple myeloma
+
+pa -- physical activity
+cnn -- convolutional neural network
+ihc -- immunohistochemistry
+sis -- stroke impact scale
+proms -- patient-reported outcome measures
+lvef -- left ventricular ejection fraction
+t-cbt -- telephone-administered cognitive behavioral therapy
+mmse -- mini mental state examination
+hcv -- hepatitis C virus
+dbp -- diastolic blood pressure
+mtm -- medication therapy management
+cmr -- cardiac magnetic resonance
+pad -- peripheral artery disease
+inr -- international normalized ratio
+ph -- pulmonary hypertension
+t1dm -- diabetes mellitus type 1
+bn -- bulimia nervosa
+mvpas -- multi-voxel pattern analyses
+rrt -- renal replacement therapy
+ida -- insulin dose adjustment
+bgls -- blood glucose levels
+mida -- mobile-based insulin dose adjustment program
+ncsp -- national chlamydia screening programme
+ede-q -- eating disorder examination-questionnaire
+itt -- intention-to-treat
+pal -- physical activity level
+ffas -- flexible fluidic actuators
+act-r -- adaptive control of thought-rational
+flair -- fluid-attenuated inversion recovery
+orion -- overdose risk information software
+ds -- decision support
+f2f -- face-to-face
+iapt -- improving access to psychological therapies
+unraq -- unmet needs, requirements, and abilities questionnaire
+hrv -- heart rate variability
+dco -- direct clinical observation
+id -- intellectual disability
+osmt -- ostomy self-management training
+wocns -- wound, ostomy, and continence nurses society
+smis -- severe mental illnesses
+isms -- interactive self-management support
+iadls -- instrumental activities of daily living
+ckd -- chronic kidney disease
+ccbt -- computerised cognitive-behavioural therapy
+nihr -- national institute for health research
+sf-36 -- short form-36 health survey
+bd -- bipolar disorder
+das28 -- disease activity score in 28 joints
+nn -- neural network
+swb -- subjective well-being
+sscs -- social support caregiver scale
+crs -- clinical risk score
+bomi -- body-machine interface
+dm -- diabetes mellitus
+amoss -- automated monitoring of symptom severity
+cnki -- china national knowledge infrastructure
+casp -- critical appraisal skills programme
+pih -- partners in health
+rus -- remote healthcare units
+scd14 -- soluble CD14 subtype (presepsin)
+rotem -- rotational thromboelastometry
+aq -- advancing quality
+nets -- neutrophil extracellular traps
+cvc -- central venous catheter
+mrsa -- methicillin-resistant staphylococcus aureus
+ticu -- toxicological intensive care unit
+dic -- disseminated intravascular coagulation
+mhp -- massive haemorrhage protocol
+ss -- septic shock
+tptd -- transpulmonary thermodilution
+gedvi -- global end-diastolic volume index
+hagma -- high anion gap metabolic acidosis
+cvvhd -- continuous veno-venous haemodialysis
+icon -- intensive care over nations
+eit -- electrical impedance tomography
+ecmo -- extracorporeal membrane oxygenation
+ppci -- primary percutaneous coronary intervention
+nlr -- neutrophil-to-lymphocyte ratio
+dci -- delayed cerebral ischemia
+news -- national early warning score
+sicq -- self-insight in coping questionnaire
+rssc -- robotic single-site cholecystectomy
+mplc -- multiport laparoscopic cholecystectomy
+qi -- quality improvement
+jpse -- joint position sense error
+tsm -- telephone-based symptom management
+pt -- physical therapy
+phq-9 -- patient health questionnaire-9
+sti -- sexually transmitted infection
+smart -- specific measurable achievable relevant time-bound
+chime -- connectedness-hope-identity-meaning-empowerment
+abi -- acquired brain injury
+aki -- acute kidney injury
+cdss -- clinical decision support system
+afm -- atomic force microscopy
+lfp -- local field potentials
+mth -- mobile telehealth
+ga -- gestational age
+lmp -- last menstrual period
+nicu -- neonatal intensive care unit
+sas -- self-rating anxiety scale
+acr -- albumin-to-creatinine ratio
+gai -- generalized anxiety inventory
+osf -- open science framework
+kap -- knowledge, attitudes, and practices
+eda -- electrodermal activity
+lasso -- least absolute shrinkage and selection operator
+shap -- shapley additive explanations
+pag -- patient advisory group
+dht -- digital health technology
+ahi -- apnea-hypopnea index
+fep -- first-episode psychosis
+ehl -- eHealth literacy
+fma -- fugl-meyer assessment
+arat -- action research arm test
+lr -- logistic regression
+fhr -- fetal heart rate
+af -- atrial fibrillation
+rr -- relative risk
+cis -- confidence intervals
+tee -- transoesophageal echocardiography
+chd -- coronary heart disease
+nhs -- national health service
+dfu -- diabetic foot ulcer
+eca -- extracorporeal circulation apparatus
+psqi -- pittsburgh sleep quality index
+sf-12 -- short form-12 health survey
+pka -- protein kinase A
+thc -- tetrahydrocannabinol
+mcqs -- multiple-choice questions
+tka -- total knee arthroplasty
+fmt -- fecal microbiota transplantation
+msk -- musculoskeletal
+prep -- pre-exposure prophylaxis
+amr -- antimicrobial resistance
+lvad -- left ventricular assist device
+knn -- k-nearest neighbor
+rmse -- root-mean-squared error
+vt -- virtual teaching
+af -- atrial fibrillation
+ptss -- posttraumatic stress symptoms
+dbs -- deep brain stimulation
+cap -- community-acquired pneumonia
+mis -- minimally invasive surgery
+psa -- prostate-specific antigen
+bsa -- body surface area
+faq -- frequently asked questions
+pp -- per-protocol
+ia -- inflammatory arthritis
+erp -- extended role practitioner
+ctd -- connective tissue disease
+eg -- experimental group
+emg -- electromyography
+pfmt -- pelvic floor muscle training
+pf -- pelvic floor
+ig -- intervention group
+abc -- activities-specific balance confidence
+frt -- functional reach test
+sota -- state-of-the-art
+tkr -- total knee replacement
+bects -- benign epilepsy with centrotemporal spikes
+asm -- antiseizure medications
+rp -- relative power
+aigc -- artificial intelligence-generated content
+ipa -- interpretive phenomenological analysis
+hcws -- healthcare workers
+ngfr -- nerve growth factor receptor
+# ror1 -- receptor tyrosine kinase-like orphan receptor 1
+apns -- advanced practice nurses
+epa -- entrustable professional activity
+assh -- American Society for Surgery of the Hand
+mt -- medical technologist
+gpt -- generative pretrained transformer
+hbm -- health belief model
+tpb -- theory of planned behavior
+sr -- super-resolution
+pwid -- people who inject drugs
+moud -- medication for opioid use disorder
+stai -- state-trait anxiety inventory
+jbi -- Joanna Briggs Institute
+fm -- family medicine
+cfpc -- College of Family Physicians of Canada
+dp -- digital pathology
+bls -- biomedical laboratory scientist
+geo -- gene expression omnibus
+tcga -- The Cancer Genome Atlas
+# rlr -- retinoic acid-inducible gene I-like receptor
+ho -- heme oxygenase
+ild -- interstitial lung disease
+esm -- experience sampling method
+frcr -- Fellow of the Royal College of Radiologists
+fp -- family planning
+sdgs -- sustainable development goals
+lms -- learning management system
+crc -- colorectal cancer
+tha -- total hip arthroplasty
+oai -- Osteoarthritis Initiative
+dcnn -- deep convolutional neural network
+msl -- medical science liaison
+hpv -- human papillomavirus
+poct -- point-of-care testing
+as -- aortic stenosis
+tavi -- transcatheter aortic valve implantation
+oi -- organoid intelligence
+pca -- prostate cancer
+sdm -- shared decision-making
+esm -- experience sampling method
+ctv -- clinical target volume
+oar -- organ-at-risk
+ros -- reactive oxygen species
+6mwt -- 6-minute walk test
+tl -- transformative learning
+dhl -- digital health literacy
+oct -- optical coherence tomography
+gad -- generalized anxiety disorder
+moca -- Montreal Cognitive Assessment
+scc -- squamous cell carcinoma
+aaa -- abdominal aortic aneurysm
+bc -- breast cancer
+cns -- central nervous system
+tmb -- tumor mutational burden
+aya -- adolescent and young adult
+mse -- mean squared error
+gc -- gastric cancer
+os -- overall survival
+csi -- scientific integrative cases
+tbl -- team-based learning
+poor -- scale of 1
+prm -- rehabilitation medicine
+nmse -- normalized mean squared error
+p-ltc -- comparison of pwp with
+psoc -- parenting sense of competence
+whtr -- waist-to-height ratio
+otr -- OneTouch Reveal
+luts -- lower urinary tract symptoms
+gm -- gray matter
+gkrs -- gamma knife radiosurgery
+dinps -- diabetes nurse practitioners
+tmz -- temozolomide
+ppis -- protein-protein interaction enrichment analysis
+csc -- cancer stem cell
+rcs -- remote consultations
+tehli -- transactional eHealth literacy instrument
+emma -- memory and management aid
+amci -- amnestic mild cognitive impairment
+tpj -- temporoparietal junction
+mrt -- microrandomized trial
+t-gru -- time-aware gated recurrent unit
+cxr -- chest X-ray
+roi -- region of interest
+mwc -- manual wheelchair
+ics -- interventional cardiologists
+pscz -- people with schizophrenia
+nicus -- neonatal intensive care units
+npdr -- nonproliferative diabetic retinopathy
+ots -- trained occupational therapists
+phrs -- personal health records
+tmc -- telemedicine centers
+egfr -- epidermal growth factor receptor
+kras -- sarcoma viral oncogene homolog
+tcia -- The Cancer Imaging Archive
+imia -- International Medical Informatics Association
+scft -- Sussex Community Foundation Trust
+drs -- diagnostic radiographers
+rtts -- radiation therapists
+ln -- lupus nephritis
+heis -- higher education institutions
+psi -- patient-specific implant
+nssi -- nonsuicidal self-injury
+kbcs -- knowledge-based coaching system
+fgd -- focus group discussion
+vga -- virtual group appointments
+cej -- cementoenamel junction
+mhif -- Minnesota Heart Institute Foundation
+anova -- analysis of variance
+bdj -- Baduanjin Qigong
+phq-4 -- Patient Health Questionnaire
+asdin -- diagnostic and interventional nephrology
+vasa -- Society of the Americas
+asco -- professional societies and organizations
+sccs -- subjective cognitive complaints
+lrcs -- eHealth in low-resource countries
+ese -- Society of Endocrinology
+ie -- information extraction
+dft -- density functional theory
+gct -- genetic counseling and testing
+amcs -- academic medical centers
+pcmh -- patient-centered medical home
+rt-pa -- recombinant tissue plasminogen activator
+uk -- United Kingdom
+kte -- kinematic estimation error
+adni -- Alzheimers Disease Neuroimaging Initiative
+cou -- community oncology unit
+ipf -- idiopathic pulmonary fibrosis
+eol -- end-of-life preparedness
+jd-r -- job demands-resources model
+cmhcs -- community mental health centers
+mcat -- multimodality-contribution-aware tripnet
+jnd -- just-noticeable difference
+sep -- somatosensory-evoked potentials
+asd -- autism spectrum disorder
+crp -- cardiac rehabilitation program
+ave -- average variance extracted
+r2 -- multiple correlations
+iwas -- individuals with aphasia
+tmj -- temporomandibular joint
+dc -- Dice coefficient
+msd -- mean surface distance
+mal -- motor activity log
+sseq -- stroke self-efficacy questionnaire
+ipds -- in-person dermatologists
+prom -- patient-reported outcomes measure
+ema -- ecological momentary assessment
+bt -- behavioral therapy
+dbt -- dialectical behavior therapy
+jss -- job satisfaction scale
+tiq -- turnover intention questionnaire
+kp-10 -- Kisspeptin-10 staining
+p4 -- progesterone
+dpn -- diabetic polyneuropathy
+mas -- medical assistants
+pcbh -- primary care behavioral health
+ccq -- clinical COPD questionnaire
+c-arf -- COVID-19-related acute respiratory failure
+χ2 -- chi-square test
+ards -- acute respiratory distress syndrome
+gcvs -- Greenfield Commonwealth Virtual School
+spls -- sound pressure levels
+ihd -- ischemic heart disease
+vlps -- visual light perceptions
+pfac -- family advisory council
+iacle -- International Association of Contact Lens Educators
+uavs -- unmanned aerial vehicle
+pxs -- polyexposure score
+pgs -- polygenic risk score
+lep -- limited English proficiency
+iow -- interpreter on wheels
+tb -- tuberculosis
+plwh -- people living with HIV
+dim -- deep infomax
+t-sne -- t-distributed stochastic neighbor embedding
+rdm -- remote digital monitoring
+acp -- advance care planning
+pacc -- Alzheimer’s Disease Cognitive Composite
+dti -- diffusion tensor imaging
+fa -- fractional anisotropy
+ccss -- childhood cancer survivors
+aac -- approach-avoidance conflict
+ptms -- post-translational modifications
+hqa -- healthcare question answering

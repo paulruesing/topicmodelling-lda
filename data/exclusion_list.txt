@@ -1,0 +1,6 @@
+# this list contains all PMIDs that should be excluded during the analysis
+# please structure the list as follows:
+# PMID -- reason
+# e.g.
+# 12345678 -- sole technical focus, not relevant
+

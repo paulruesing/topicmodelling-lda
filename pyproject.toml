@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "lda-topicmodelling"
+version = "0.1.0"
+description = "Topic Modelling framework for LDA"
+authors = ["paulrusing <paul.ruesing@rwth-aachen.de>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pandas = "*"
+numpy = "^1"
+tomotopy = "*"
+matplotlib = "*"
+wordcloud = "*"
+tqdm = "*"
+ipywidgets = "*"
+transformers = "*"
+huggingface_hub = "*"
+networkx = "*"
+nltk = "*"
+igraph = "*"
+cdlib = "*"
+openpyxl = "*"
+# torch has to be installed with conda!
+notebook = "^7.3.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
