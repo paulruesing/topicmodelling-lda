@@ -17,11 +17,11 @@ iteratively assigning words to topics based on their likelihood of belonging to 
 ![Example Output](output/With Communities Topic network 2868 Articles 25 Topics.png)
 
 ## 3. Repository Structure
-*data/*: example dataset and txt-files serving as input
-*literature/*: some papers relevant for the implementation
-*notebooks/*: a demo notebook demonstrating the workflow
-*output/*: example output plots
-*src/*: the source code of the framework
+- *data/*: example dataset and txt-files serving as input
+- *literature/*: some papers relevant for the implementation
+- *notebooks/*: a demo notebook demonstrating the workflow
+- *output/*: example output plots
+- *src/*: the source code of the framework
 
 ## 4. How to use
 ### 4.1. Required Modules
