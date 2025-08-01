@@ -24,7 +24,8 @@ class LDAEngine:
                  id_column='PMID',
                  model_file:str = None,
                  topic_labels: [str] = None,
-                 n_words_per_topic: int = 8
+                 n_words_per_topic: int = 8,
+                 raw_text_frame: Union[pd.DataFrame, str] = None
                  ):
         """
         Initialize an LDAEngine instance.
@@ -35,7 +36,7 @@ class LDAEngine:
         Parameters
         ----------
         text_frame : Union[pd.DataFrame, str], optional
-            DataFrame or JSON file path containing text data.
+            DataFrame or JSON file path containing preprocessed text data. Index will be resetted to prevent errors.
         text_column : str, optional
             Name of the column containing text data. Default is "Abstract".
         time_column : str, optional
@@ -48,27 +49,33 @@ class LDAEngine:
             Pre-defined labels for topics. Default is None.
         n_words_per_topic : int, optional
             Number of words to display per topic. Default is 8.
+        raw_text_frame : Union[pd.DataFrame, str], optional
+            DataFrame or JSON file path containing original, raw text data. Index will be resetted to prevent errors.
 
         Examples
         --------
-        >>> engine = LDAEngine(text_frame="data.json", topic_labels=["Topic A", "Topic B"])
+        >>> engine = LDAEngine(text_frame="data.json")
         """
-        self.text_frame = text_frame if isinstance(text_frame, pd.DataFrame) else pd.read_json(text_frame)
+        self.text_frame = text_frame if (isinstance(text_frame, pd.DataFrame)
+                                         or text_frame is None) else pd.read_json(text_frame)
+        self.text_frame.reset_index(drop=True, inplace=True)
         self.text_column = text_column  # text column name
         self.time_column = time_column  # publication date column name
         self.id_column = id_column  # text id column
         self.model = None if model_file is None else LDAModel.load(str(model_file))  # eventually load model from .bin file
         self.n_words_per_topic = n_words_per_topic  # number of words per topic to consider and display
         self.topic_labels = None if topic_labels is None else list(topic_labels)  # eventually pre-defined topic labels
+        self.raw_text_frame = raw_text_frame if (isinstance(raw_text_frame, pd.DataFrame) or
+                                                 raw_text_frame is None) else pd.read_json(raw_text_frame)
 
     def __repr__(self):
         """ String representation """
-        if self.model is not None: self.model.summary()
+        self.model.summary()
         return f"LDAEngine instance with {len(self.text_frame)} articles."
 
     def __str__(self):
         """ Print operator """
-        return self.__repr__()
+        self.model.summary()
 
     @property
     def text_series(self) -> pd.Series:
@@ -93,6 +100,18 @@ class LDAEngine:
             New text data to replace the current text column.
         """
         self.text_frame.loc[:, self.text_column] = value
+
+    @property
+    def raw_text_series(self) -> pd.Series:
+        """
+        Get the text entries from the (non-preprocessed) raw_text_frame.
+
+        Returns
+        -------
+        pd.Series
+            Series containing text data
+        """
+        return self.raw_text_frame.loc[:, self.text_column]
 
     def initialise_model(self, n_topics: int, **model_kwargs):
         """
@@ -224,7 +243,7 @@ class LDAEngine:
         pd.Series
             Series containing publication years.
         """
-        return get_publication_year(self.text_frame, time_column=self.text_column)
+        return get_publication_year(self.text_frame, time_column=self.time_column)
 
     def get_time_sliced_text_frame(self, start_year: int = None, end_year: int = None, verbose=True) -> pd.DataFrame:
         """
@@ -334,7 +353,9 @@ class LDAEngine:
 
         # eventually print article and topic_words:
         if verbose:
-            print("Article to be analysed:\n", self.text_series.loc[article_index])
+            if self.raw_text_frame is not None: article = self.raw_text_series.iloc[article_index]
+            else: article = self.text_series.iloc[article_index]
+            print("Article to be analysed:\n", article)
             for index, row in topics.iterrows():
                 print(f"{index}: '{row['Topic Name']}' with words {list(self.words_per_topic.iloc[int(row['Topic Index']), :])[:-1]}")
 
@@ -382,17 +403,115 @@ class LDAEngine:
         column_list = [self.id_column, self.text_column, self.time_column]
         if author_column is not None: column_list.append(author_column)
         if journal_column is not None: column_list.append(journal_column)
+        if title_column is not None: column_list.insert(1, title_column)
 
         # copy relevant columns:
         relevant_output_table = self.text_frame.loc[:, column_list].copy()
+        if self.raw_text_frame is not None: relevant_output_table['Original Text'] = self.raw_text_series.copy()
         relevant_output_table['PublicationYear'] = self.publication_years
         relevant_output_table['Topic Number'], relevant_output_table['Topic Label'] = get_topic_assignments_for_corpus(self.model,
                                                                              self.text_series, self.topic_labels)
         return relevant_output_table
 
+    def get_topic_discipline_occurrences(self, custom_key_word_mapping: dict = None, custom_inferior_topics: [str]=None,
+                                         journal_column='Journal', verbose=False):
+        """ Returns a dataframe with topics as rows and disciplines (derived from journal_column) as columns and occurrence counts. """
+        # keywords to detect disciplines:
+        journal_keywords = {
+            "Surgery": ["surgery", "nanosurgical", "chirurg", "endoscopy", "surgicall", "bone", "chirurgia", "joint",
+                        "amputation", "prosthetic", "surge"],
+            "Nursing": ["nursing", "nurse", "clinics", "care"],
+            "Doctors": ["medical", "anestesiologica", "injury", "medizinische", "diagnostics", "gesundheitswesen",
+                        "disease", "medicina", "disorders", "sleep", "Schmerz", "diagnosis", "wound", "bioethics",
+                        "breast", "pain", "internist", "medicine", "physician", "practitioner"],
+            "Therapy": ["therapy", "intervention", "education", "terapeutica", "rehabilitation", "physical therapy"],
+            "Psychology": ["psychology", "Schizophrenia", "stroke", "geriatrie", "gerontology", "psy", "autism",
+                           "psychosomatic", "psychiatric", "mental", "behavior", "cognitive", "psychiatry",
+                           "psychological"],
+            "Pediatrics": ["child", "logopedics", "growth", "pediatric", "infant", "Pediatrics"],
+            "Neurology": ["brain", "parkinson", "sensors", "hearing", "cognition", "audiology", "dementia",
+                          "neuroscience", "neuro", "memory", "neurologique", "hippocampus", "neural", "neurologia",
+                          "cognitive", "neuronal", "neuron", "nervenarzt", "nerven", "neurology", "neurologist",
+                          "neurosciences", "neurotherapeutics"],
+            "Emergency Medicine": ["emergency", "clinic", "emergency", "intensiva", "socialogy", "safety", "clinical",
+                                   "anasthesist", "anaesthesist", "anaesthesiologica", "accident", "urgent",
+                                   "ambulance", "anaesthesia", "Resuscitation"],
+            "Public Health": ["public health", "life", "malaria", "family", "anestesia", "diagnostics", "voice",
+                              "aging", "society", "physics", "human", "health", "religion", "birth", "health service",
+                              "community health", "epidemiology", "virus", "healthcare"],
+            "Medical Technology": ["computer", "chip", "data", "wireless", "simulation", "network", "multimedia",
+                                   "interfaces", "bioengineering", "AI", "imageing", "protocols", "simulation",
+                                   "cybernetics", "canmed", "robotics", "computational", "micromachines", "digital",
+                                   "artificial intelligence", "bioinformatics", "biomechanics", "technology",
+                                   "automated", "medical_technology", "informatics", "engineer", "engineering",
+                                   "imaging"],
+            "Genetics": ["congenital", "entropy", "genomics", "genetic", "hereditary"],
+            "Pharmacology": ["drug", "vaccine", "vaccines", "apinal", "medication", "pharmaceutical", "pharmaceutics",
+                             "pharmacy", "pharmacology", "pharmacists", "pharmacist", "Pharmacotherapy",
+                             "Pharmacogenomics"],
+            "Radiology": ["radiology", "radiologist", "radiologic", "nuklear", "rontgen", "radiography"],
+            "Urology": ["urology", "urologe", "urological", "urologie", "urologist"],
+            "Cardiology": ["cardio", "heart", "cardiologist", "ergonomics", "electrocardiology", "electrocardiogram"],
+            "Chemistry": ["chemistry", "Nanomaterials", "substance", "chemical", "molecular"],
+            "Physics": ["physics", "physicist"],
+            "Dentistry": ["dental", "endodontic", "orthodontist", "dentofacial", "dentistry", "dentist", "oral"],
+            "Anatomy": ["anatomical", "torax", "endocrinology", "pulse", "thrombosis", "Cortex", "anatomy", "diabetes"],
+            "Rheumatology": ["rheumatology", "osteoporosis", "osteoporology", "rheumatic"],
+            "Orthopaedics": ['Orthopaedics', 'Orthopaedic'],
+            "Gastroenterology": ['gastroenterology', 'gastroenterologist'],
+            "Pathology": ["pathology"],
+            "Physiology": ["physiology", "eye", "body", "movement", "Orthopaedic", "physical", "muscle"],
+            "Gynaecology": ["gynaecology", "ultrasound", "gynaecologist", "cannabis", "Gynecologie", "fertile"],
+            "Biology": ["biologist", "biomaterialia", "immunologica", "Genomics", "roentgenology",
+                        "microbiologica" "nutrients", "Nutrients", "biological", "biology", "microbiology",
+                        "bioinspiration", "bio systems", "nature", "antibiotics", "immunology", "bioscience"],
+            "Oncology": ["cancer", "oncologist", "oncology", "chemosphere", "cancers"],
+            "Dermatology": ["dermatology", "dermatologie", "dermatologist", "scars", "wounds", "burn"],
+            "FurtherTypesOfScience": ["Scientific", "science", "research", "methods", "teacher"],
+            "Telemedicine": ['telemedicine', 'telecare', 'tele', 'telehealth'],
+            "Veterinary Medicine": ['veterinary', 'vet', 'Veterinarian']
+        } if custom_key_word_mapping is None else custom_key_word_mapping
+        inferior_results = ['Doctors', 'FurtherTypesOfScience', 'Public Health', 'Emergency Medicine',
+                            'Medical Technology', 'Nursing'] if custom_inferior_topics is None else custom_inferior_topics
+        labelled_articles = self.get_labelled_text_frame(journal_column=journal_column)
+
+        # derive disciplines:
+        labelled_articles['Discipline'] = labelled_articles.loc[:, journal_column].apply(assign_topic_based_on_keyword,
+                                                                                         topic_keyword_dict = journal_keywords,
+                                                                                         inferior_results = inferior_results,
+                                                                                         require_full_word_match=False,
+                                                                                         verbose=verbose)
+
+        # count occurrence per discipline and topic:
+        topic_discipline_occurrences_multi_ind = labelled_articles.groupby(by=['Topic Number', 'Discipline']).count().loc[
+                                              :, self.id_column].rename('Occurrence')
+
+        # construct dataframe:
+        columns = pd.Series(list(labelled_articles.loc[:, 'Discipline'].unique()), name='Disciplines')
+        index = pd.Series(list(range(self.n_topics))+['Total'], name='Topic Number')  # index is topic numbers + total
+        topic_discipline_occurrences_frame = pd.DataFrame(index=index, columns=columns, data=[[0] * len(columns)] * len(index))
+        # parse from multi-index series to dataframe with total last row:
+        for topic_ind in index:
+            if topic_ind == 'Total':
+                topic_discipline_occurrences_frame.loc[topic_ind, :] = topic_discipline_occurrences_frame.sum(axis=0)
+            for journal in columns:
+                try:
+                    topic_discipline_occurrences_frame.loc[topic_ind, journal] += topic_discipline_occurrences_multi_ind.loc[
+                        topic_ind, journal]
+                except KeyError:  # if key not found that means 0 oc
+                    # currences
+                    topic_discipline_occurrences_frame.loc[topic_ind, journal] += 0
+
+        # replace topic numbers with labels:
+        if self.topic_labels is not None:
+            topic_discipline_occurrences_frame['Topic Label'] = self.topic_labels + ['Total']
+            topic_discipline_occurrences_frame.set_index('Topic Label', inplace=True)
+
+        return topic_discipline_occurrences_frame
+
     ######################## Plotting Functions ########################
     def plot_word_clouds(self, cloud_word_count: int = 50,
-                         topics_to_evaluate: [int] = None) -> None:
+                         topics_to_evaluate: [int] = None, include_topic_labels=True) -> None:
         """
         Plot word clouds for selected topics.
 
@@ -413,7 +532,7 @@ class LDAEngine:
         """
         # include topic labels if already labelled
         topics_to_evaluate = [0, 1, 2] if topics_to_evaluate is None else topics_to_evaluate
-        topic_labels = [self.topic_labels[topic_ind] for topic_ind in topics_to_evaluate] if self.topic_labels is not None else None
+        topic_labels = [self.topic_labels[topic_ind] for topic_ind in topics_to_evaluate] if (self.topic_labels is not None and include_topic_labels) else [f"Topic {ind}" for ind in topics_to_evaluate]
         # plot:
         plot_word_clouds(self.model, cloud_word_count=cloud_word_count, topics_to_evaluate=topics_to_evaluate,
                          topic_labels=topic_labels)
@@ -484,7 +603,7 @@ class LDAEngine:
         node_scale_factor : int, optional
             Scaling factor for node sizes, by default 30.
         edge_scale_factor : int, optional
-            Scaling factor for edge widths. If None, no scaling is applied, by default None.
+            Scaling factor for edge widths. If None, automatic scaling is applied, by default None.
         edge_power : float, optional
             Power to which edge weights are raised for scaling, by default 1.4.
         optimal_node_distance : float, optional
@@ -530,13 +649,20 @@ class LDAEngine:
             if save_title_prefix is not None: print("Save title prefix will not be considered, because save_dir not provided.")
             save_title = None
 
+        # include time slice in fig title (communities are included automatically)
+        title_suffix = ""
+        if time_slice[0] is not None: title_suffix += f" from {time_slice[0]}"
+        if time_slice[1] is not None: title_suffix += f" til {time_slice[1]}"
+
         # plot graph:
         plot_topic_graph(graph, positions, topic_labels=self.topic_labels,
                          node_colors=node_color_dict, edge_colors=edge_color_dict,
                          community_memberships=community_memberships,
-                         save_title=save_title, **plot_kwargs)
+                         save_title=save_title, title_suffix=title_suffix, **plot_kwargs)
 
         return graph, positions
+
+
 
 
 ######################## Auxiliary Functions ########################
@@ -561,6 +687,41 @@ def get_tokenization(model: LDAModel) -> dict:
     return {model.used_vocabs[ind]: ind for ind in range(len(model.used_vocabs))}
 
 
+def assign_topic_based_on_keyword(input_string: str, topic_keyword_dict: dict, verbose=False,
+                                  require_full_word_match=True, inferior_results: [str] = None) -> str:
+    """
+    Assign topic based on keyword-dict (topic: [keyword1, keyword2, ...]) if one full word (require_full_word_match=True) or
+    any part of the string (require_full_word_match=False) matches keywords. Ignores capitalisation.
+
+    Inferior results get dominated if there are multiple classification results (in the order as provided in the list as long as there remain other topics).
+    """
+    topic_list = []  # work with list to allow for multiple topics
+    input_words = input_string.lower().split() if require_full_word_match else input_string.lower()
+    for topic, keywords in topic_keyword_dict.items():
+        for keyword in keywords + [topic]:
+            if keyword.lower() in input_words:
+                topic_list.append(topic)
+                break  # break inner loop
+
+    # eventually overwrite inferior results:
+    if inferior_results is not None:
+        for inferior_topic in inferior_results:
+            if len(topic_list) > 1:
+                new_topic_list = [topic for topic in topic_list if topic != inferior_topic]  # exclude inferior results
+                topic_list = new_topic_list if len(new_topic_list) > 0 else topic_list  # replace if other topics remain
+
+    # save result string or "Other"
+    if len(topic_list) == 0:
+        result = "Other"
+    else:
+        result = ", ".join(topic_list)  # return string with all topics from list
+
+    # eventual explicatory statement
+    if verbose: print("Assigned", result, "to:\t", input_string)
+
+    return result
+
+
 def get_publication_year(input_frame: pd.DataFrame, time_column='PublicationDate') -> pd.Series:
     """
     Extract the publication year from a date column in a DataFrame.
@@ -583,8 +744,8 @@ def get_publication_year(input_frame: pd.DataFrame, time_column='PublicationDate
     assert time_column in list(input_frame.columns), f"Input frame must contain the specified time-column {time_column}"
     date_column = input_frame.loc[(input_frame.loc[:, time_column] != "Unknown")].loc[:, time_column]
     datetime_series = pd.to_datetime(date_column, format='ISO8601', errors='coerce')
-    datetime_series.dropna(inplace=True)
-    return datetime_series.dt.year.astype(int).rename('Publication Year')
+    #datetime_series = datetime_series.dropna(axis='index')
+    return datetime_series.dt.year.astype('Int64').rename('Publication Year')
 
 
 def get_slice_publication_year(input_frame: pd.DataFrame, start_year: int = None, end_year: int = None, verbose=True,
@@ -627,7 +788,7 @@ def get_slice_publication_year(input_frame: pd.DataFrame, start_year: int = None
     # derive borders:
     lower_border = start_year if start_year is not None else temp_df['Publication Year'].min()
     upper_border = end_year if end_year is not None else temp_df['Publication Year'].max()
-    assert upper_border > lower_border, f"end_year {upper_border} has to be higher than start_year {lower_border}!"
+    assert upper_border >= lower_border, f"end_year {upper_border} has to be higher than start_year {lower_border}!"
     # slice frame:
     time_slice = temp_df.loc[
         (temp_df['Publication Year'] <= upper_border) & (temp_df['Publication Year'] >= lower_border)]
@@ -1365,7 +1526,7 @@ def initialise_topic_graph(model: LDAModel, occurrence_threshold_topics=1, co_oc
 
 def plot_topic_graph(G, pos, topic_labels: list = None,
                      fig_size=(16, 16), legend_pos=(0.5, -0.4),
-                     title: str = None, save_title=None, legend_cols: int = None,
+                     title_suffix: str = None, save_title=None, legend_cols: int = None,
                      node_colors: Union[list, dict] = None, edge_colors: Union[list, dict] = None,
                      community_memberships: dict = None, include_community_labels=True) -> None:
     """
@@ -1376,7 +1537,7 @@ def plot_topic_graph(G, pos, topic_labels: list = None,
     :param topic_labels: list of topic labels, has to match the order of nodes
     :param fig_size: plot size
     :param legend_pos: position of legend in relative coordinates (x, y)
-    :param title: if provided, is displayed at top of figures, otherwise default title is used
+    :param title_suffix: if provided, is displayed at additional to title at top of figures, otherwise default title is used
     :param save_title: if provided, save fig to such
     :param node_colors: dict {node: color, ...} or list with node colors to be used
     :param edge_colors: dict {(node1, node2): color, ...} or list with edge colors to be used
@@ -1402,7 +1563,7 @@ def plot_topic_graph(G, pos, topic_labels: list = None,
     nx.draw(G, pos, ax=ax, with_labels=True, node_size=node_weights, node_color=node_colors, edge_color=edge_colors,
             width=edge_weights, font_size=15)
     # distinct title considering title and community_memberships:
-    ax.set_title(("Topic Network Graph" if community_memberships is None else "Topic Network Graph with Communities") if title is None else title,
+    ax.set_title(("Topic Network Graph" if community_memberships is None else "Topic Network Graph with Communities") + ("" if title_suffix is None else title_suffix),
                  fontsize=30)
 
     # legend:
@@ -1431,7 +1592,7 @@ def plot_topic_graph(G, pos, topic_labels: list = None,
 
         # display legend:
         plt.legend(handles=legend_elements, loc='lower center',
-                   ncols=(len(node_colors) // 15 if legend_cols is None else legend_cols),
+                   ncols=(len(node_colors) // 15 + 1 if legend_cols is None else legend_cols),
                    bbox_to_anchor=legend_pos, fontsize=15)
 
     # saving:
