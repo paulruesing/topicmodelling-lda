@@ -560,6 +560,7 @@ class LDAEngine:
         plot_publications_per_year(self.text_frame, self.time_column, time_interval[0], time_interval[1], years_to_summarize=years_to_summarize)
 
     def plot_topic_graph(self, graph=None, positions=None,
+                         nodes_to_hide: [int] = None,
                          save_dir: str = None, save_title_prefix: str = "",
                          time_slice: tuple = (None, None),
                          community_algorithm:Literal[None, 'greedy', 'leiden', 'multilevel'] = None,
@@ -583,6 +584,8 @@ class LDAEngine:
         positions : dict, optional
             Node positions for the graph layout. If not provided, positions are
             generated automatically, by default None.
+        nodes_to_hide : list of int, optional
+            List of nodes to be hidden in result plot.
         save_dir : str, optional
             Directory to save the graph image, by default None.
         save_title_prefix : str, optional
@@ -656,6 +659,7 @@ class LDAEngine:
 
         # plot graph:
         plot_topic_graph(graph, positions, topic_labels=self.topic_labels,
+                         nodes_to_hide=nodes_to_hide,
                          node_colors=node_color_dict, edge_colors=edge_color_dict,
                          community_memberships=community_memberships,
                          save_title=save_title, title_suffix=title_suffix, **plot_kwargs)
@@ -1525,6 +1529,7 @@ def initialise_topic_graph(model: LDAModel, occurrence_threshold_topics=1, co_oc
 
 
 def plot_topic_graph(G, pos, topic_labels: list = None,
+                     nodes_to_hide: [int] = None,
                      fig_size=(16, 16), legend_pos=(0.5, -0.4),
                      title_suffix: str = None, save_title=None, legend_cols: int = None,
                      node_colors: Union[list, dict] = None, edge_colors: Union[list, dict] = None,
@@ -1535,6 +1540,7 @@ def plot_topic_graph(G, pos, topic_labels: list = None,
     :param G: networkx graph object
     :param pos: networkx positional encoding of nodes
     :param topic_labels: list of topic labels, has to match the order of nodes
+    :param nodes_to_hide: list of nodes to hide
     :param fig_size: plot size
     :param legend_pos: position of legend in relative coordinates (x, y)
     :param title_suffix: if provided, is displayed at additional to title at top of figures, otherwise default title is used
@@ -1544,23 +1550,49 @@ def plot_topic_graph(G, pos, topic_labels: list = None,
     :param community_memberships: dict with structure {community_name: [node1, node2, ...], ...} used to order legend
     :param include_community_labels: if True, label communities in legend
     """
+    G = G.copy()  # because we might manipulate the graph object
+    # hide some nodes and incident edges:
+    if nodes_to_hide is not None:
+        if not isinstance(nodes_to_hide, list): nodes_to_hide = [nodes_to_hide]
+        G.remove_nodes_from(nodes_to_hide)
+
+        # adjust custom colors:
+        if node_colors is not None: node_colors = {node: node_colors[node] for node in G.nodes}
+        if edge_colors is not None:
+            if isinstance(edge_colors, dict): edge_colors = {edges: edge_colors[edges] for edges in G.edges}
+            else: edge_colors = {edges: edge_colors[edge_ind] for edge_ind, edges in enumerate(G.edges)}
+
+        # adjust communities:
+        if community_memberships is not None:
+            community_memberships = {com_name: [node for node in community_memberships[com_name] if node not in nodes_to_hide]
+                                     for com_name in community_memberships.keys()}
+            print(community_memberships)
+
     # infer properties to create graph:
     node_weights = list(nx.get_node_attributes(G, 'weight').values())
     edge_weights = list(nx.get_edge_attributes(G, 'weight').values())
+
     # infer colors from graph or argument. in latter case, dicts and lists are allowed as input:
-    node_colors = list(nx.get_node_attributes(G, 'color').values()) if node_colors is None else (
-        [node_colors[node] for node in G.nodes] if isinstance(node_colors, dict) else node_colors)
-    edge_colors = list(nx.get_edge_attributes(G, 'color').values()) if edge_colors is None else (
-        [edge_colors[edges] for edges in G.edges] if isinstance(edge_colors, dict) else edge_colors)
+    if node_colors is None: node_colors = list(nx.get_node_attributes(G, 'color').values())
+    # type casting
+    if isinstance(node_colors, dict):
+        node_color_dict = node_colors; node_color_list = [node_colors[node] for node in G.nodes]
+    else:
+        node_color_dict = {node: node_colors[node_ind] for node_ind, node in enumerate(G.nodes)}; node_color_list = node_colors
+    if edge_colors is None: edge_colors = list(nx.get_edge_attributes(G, 'color').values())
+    # type casting
+    if isinstance(edge_colors, dict): edge_color_list = [edge_colors[edges] for edges in G.edges]
+    else: edge_color_list = edge_colors
+
     # prevent errors:
     assert len(G.nodes) == len(node_weights) == len(
-        node_colors), f"Node attribute list flawed! {len(G.nodes)} != {len(node_weights)} != {len(node_colors)}"
+        node_color_list), f"Node attribute list flawed! {len(G.nodes)} != {len(node_weights)} != {len(node_color_list)}"
     assert len(G.edges) == len(edge_weights) == len(
-        edge_colors), f"Edge attribute list flawed! {len(G.edges)} != {len(edge_weights)} != {len(edge_colors)}"
+        edge_color_list), f"Edge attribute list flawed! {len(G.edges)} != {len(edge_weights)} != {len(edge_color_list)}"
 
     # plotting:
     fig, ax = plt.subplots(1, 1, figsize=fig_size)
-    nx.draw(G, pos, ax=ax, with_labels=True, node_size=node_weights, node_color=node_colors, edge_color=edge_colors,
+    nx.draw(G, pos, ax=ax, with_labels=True, node_size=node_weights, node_color=node_color_list, edge_color=edge_color_list,
             width=edge_weights, font_size=15)
     # distinct title considering title and community_memberships:
     ax.set_title(("Topic Network Graph" if community_memberships is None else "Topic Network Graph with Communities") + ("" if title_suffix is None else title_suffix),
@@ -1571,8 +1603,8 @@ def plot_topic_graph(G, pos, topic_labels: list = None,
         if community_memberships is None:  # standard legend with community labels
             label_list = [f"({ind}) {topic_labels[ind]}" for ind in range(len(topic_labels))]
             legend_elements = [
-                Line2D([], [], color="white", marker='o', label=label_list[node_ind],
-                       markerfacecolor=node_colors[node_ind], markersize=15) for node_ind in range(len(node_colors))
+                Line2D([], [], color="white", marker='o', label=label_list[node],
+                       markerfacecolor=node_color_dict[node], markersize=15) for node in G.nodes
             ]
 
         else:  # amend legend to convey community memberships more clearly:
@@ -1588,11 +1620,11 @@ def plot_topic_graph(G, pos, topic_labels: list = None,
                 for node in members:
                     legend_elements.append(
                         Line2D([], [], color="white", marker='o', label=f"({node}) {topic_labels[node]}",
-                               markerfacecolor=node_colors[node], markersize=15))
+                               markerfacecolor=node_color_dict[node], markersize=15))
 
         # display legend:
         plt.legend(handles=legend_elements, loc='lower center',
-                   ncols=(len(node_colors) // 15 + 1 if legend_cols is None else legend_cols),
+                   ncols=(len(node_color_list) // 15 + 1 if legend_cols is None else legend_cols),
                    bbox_to_anchor=legend_pos, fontsize=15)
 
     # saving:
